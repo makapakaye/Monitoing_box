@@ -25,7 +25,7 @@
 
 #include <EEPROM.h>
 #include <bsec2.h>
-#include <commMux\commMux.h>
+#include <commMux/commMux.h>
 /* For two class classification use configuration under config/FieldAir_HandSanitizer */
 #define CLASSIFICATION	1
 #define REGRESSION		  2
