@@ -41,6 +41,13 @@
 #define CLOCK_FREQUENCY 	UINT32_C(400000)
 #define COMM_SPEED      	UINT32_C(8000000)
 
+#define SDA_PIN 16    // 23 黃
+#define SCL_PIN 17    // 22 綠 
+#define SCK_PIN 36    // 5 黃
+#define MOSI_PIN 37   // 18 紫
+#define MISO_PIN 35   // 19 藍
+
+
 const uint8_t I2C_EXPANDER_ADDR = 0x20;
 const uint8_t I2C_EXPANDER_OUTPUT_REG_ADDR = 0x01;
 const uint8_t I2C_EXPANDER_OUTPUT_DESELECT = 0xFF;
@@ -64,15 +71,9 @@ comm_mux comm_mux_set_config(TwoWire &wireobj, SPIClass &spiobj, uint8_t idx, co
  */
 void comm_mux_begin(TwoWire &wireobj, SPIClass &spiobj)
 {
-    int SDA_PIN = 16;    // 23 黃
-    int SCL_PIN = 17;    // 22 綠
-    int8_t SCK_PIN = 36;    // 5 黃
-    int8_t MOSI_PIN = 37;    // 18 紫
-    int8_t MISO_PIN = 35;    // 19 藍
-    wireobj.setPins(SDA_PIN, SCL_PIN);
-
-    
+    wireobj.setPins(SDA_PIN, SCL_PIN);   
     wireobj.begin();
+
     wireobj.setClock(CLOCK_FREQUENCY);
     wireobj.beginTransmission(I2C_EXPANDER_ADDR);
     wireobj.write(I2C_EXPANDER_CONFIG_REG_ADDR);
