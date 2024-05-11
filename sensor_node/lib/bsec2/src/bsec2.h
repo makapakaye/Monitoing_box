@@ -81,6 +81,15 @@ public:
 
     Bsec2(void);
 
+
+    /**
+     * Test
+    */
+    uint8_t getSensorOpMode(void);
+    void setSensorOpMode(uint8_t opMode);
+    int8_t getSensorStatus(void);
+
+
     /**
      * @brief Function to initialize the sensor based on custom callbacks
      * @param intf     : BME68X_SPI_INTF or BME68X_I2C_INTF interface

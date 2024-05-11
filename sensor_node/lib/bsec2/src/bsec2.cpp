@@ -58,6 +58,37 @@ Bsec2::Bsec2(void)
     memset(&outputs, 0, sizeof(outputs));
 }
 
+
+/********************************************************* */
+/*                  Test function                          */
+/********************************************************* */
+
+/**
+ * 獲取感測器 opmode (From bme68xLibrary.cpp)
+*/
+uint8_t Bsec2::getSensorOpMode(void){
+    return sensor.getOpMode();
+}
+
+/**
+ * 設置感測器 opmode (From bme68xLibrary.cpp)
+*/
+void Bsec2::setSensorOpMode(uint8_t opMode){
+    return sensor.setOpMode(opMode);
+}
+
+/**
+ * 獲取感測器 status (ex: BME68X_OK (bme68x/bme68x_defs.h))
+*/
+int8_t Bsec2::getSensorStatus(void){
+    return sensor.getStatus();
+}
+
+/********************************************************* */
+/*                END Test function                        */
+/********************************************************* */
+
+
 /**
  * @brief Function to initialize the sensor based on custom callbacks
  */
