@@ -103,7 +103,7 @@ Bme68x::Bme68x(void)
 	comm.i2c.i2cAddr = 0;
 	comm.spi.spiobj = NULL;
 	comm.spi.cs = 0;
-	status = BME68X_OK;
+	status = BME68X_E_NULL_PTR;
 	memset(&bme6, 0, sizeof(bme6));
 	memset(&conf, 0, sizeof(conf));
 	memset(&heatrConf, 0, sizeof(heatrConf));
@@ -113,6 +113,23 @@ Bme68x::Bme68x(void)
 	iFields = 0;
 	lastOpMode = BME68X_SLEEP_MODE;
 }
+
+
+/********************************************************* */
+/*                  Test function                          */
+/********************************************************* */
+
+/**
+ * 獲取感測器 opmode (From bme68x/bme68x.c)
+*/
+int8_t Bme68x::getStatus(void){
+	return status;
+}
+
+/********************************************************* */
+/*                END Test function                        */
+/********************************************************* */
+
 
 /**
  * @brief Function to initialize the sensor based on custom callbacks
@@ -382,6 +399,9 @@ uint8_t Bme68x::fetchData(void)
 	nFields = 0;
 	status = bme68x_get_data(lastOpMode, sensorData, &nFields, &bme6);
 	iFields = 0;
+
+	// Serial.println("uint8_t Bme68x::fetchData(void)" + String(lastOpMode));
+	// Serial.println("uint8_t Bme68x::fetchData(void) return status " + String(status));
 
 	return nFields;
 }

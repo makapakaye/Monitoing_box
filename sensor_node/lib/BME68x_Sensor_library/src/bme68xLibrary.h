@@ -131,6 +131,13 @@ public:
      */
     Bme68x(void);
 
+
+    /**
+     * Test
+    */
+    int8_t getStatus(void);
+
+
     /**
      * @brief Function to initialize the sensor based on custom callbacks
      * @param intf     : BME68X_SPI_INTF or BME68X_I2C_INTF interface
