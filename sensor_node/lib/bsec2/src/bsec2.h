@@ -68,7 +68,6 @@ typedef struct
 } bsecOutputs;
 
 class Bsec2;
-typedef void (*bsecCallback)(const bme68xData data, const bsecOutputs outputs, const Bsec2 bsec);
 
 /* BSEC2 class definition */
 class Bsec2
@@ -135,11 +134,6 @@ public:
      * @return	true for success, false otherwise
      */
     bool run(void);
-
-    void attachCallback(bsecCallback callback)
-    {
-        newDataCallback = callback;
-    }
 
     /**
      * @brief Function to get the BSEC outputs
@@ -222,8 +216,6 @@ public:
 
 private:
     bsec_bme_settings_t bmeConf;
-
-    bsecCallback newDataCallback;
 
     bsecOutputs outputs;
     /* operating mode of sensor */

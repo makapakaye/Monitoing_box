@@ -50,7 +50,6 @@ Bsec2::Bsec2(void)
     status = BSEC_OK;
     extTempOffset = 0.0f;
     opMode = BME68X_SLEEP_MODE;
-    newDataCallback = nullptr;
     bsecInstance = nullptr;
 
     memset(&version, 0, sizeof(version));
@@ -385,10 +384,8 @@ bool Bsec2::processData(int64_t currTimeNs, const bme68xData &data)
 
         if (status != BSEC_OK)
             return false;
-
-        if(newDataCallback)
-            newDataCallback(data, outputs, *this);
     }
+
     return true;
 }
 
