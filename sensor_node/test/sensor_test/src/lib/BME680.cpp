@@ -27,8 +27,8 @@
  *
  */
 
+#include <Arduino.h>
 #include "BME680.h"
-#include "Arduino.h"
 
 // #define BME680_DEBUG
 

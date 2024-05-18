@@ -24,12 +24,12 @@
 #ifndef __BME680_H__
 #define __BME680_H__
 
-#include "Arduino.h"
+#include <Arduino.h>
+#include <Wire.h>
 
 #include "bme68x/bme68x.h"
 #include "BusIO/I2CDevice.h"
 #include "BusIO/SPIDevice.h"
-#include <Wire.h>
 
 #define BME68X_DEFAULT_ADDRESS (0x77)    ///< The default I2C address
 #define BME68X_DEFAULT_SPIFREQ (1000000) ///< The default SPI Clock speed

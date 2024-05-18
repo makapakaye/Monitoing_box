@@ -2,41 +2,14 @@
  * 單顆感測器用 BME68X
  */
 
-#include <heltec_unofficial.h>
 #include <Wire.h>
+#include <heltec_unofficial.h>
 
 #include "src/lib/BME680.h"
+#include "src/config/config.h"
 
 
-// SPI
-/*
-#define BME_SCK 18
-#define BME_MISO 19
-#define BME_MOSI 23
-#define BME_CS 5
-*/
-
-// I2C
-#define BME_SDA_PIN 16 // 23 藍
-#define BME_SCL_PIN 17 // 22 紫
-
-/* Error LED setup */
-#define PANIC_LED LED_PIN // LED_PIN from <heltec_unofficial.h>
-#define ERROR_DURATION 1000
-
-BME680 bme(Wire); // I2C
-// BME680 bme(BME_CS); // SPI
-// BME680 bme(BME_CS, BME_MOSI, BME_MISO, BME_SCK);
-
-
-typedef struct
-{
-    float temperature;
-    float humidity;
-    float pressure;
-    float gasResistance;
-} BME680Data;
-
+BME680 bme(Wire);
 BME680Data sensorData;
 
 
@@ -78,6 +51,10 @@ void errLeds(void)
 void setup()
 {
     Serial.begin(115200);
+    Serial.println("----- start init -----");
+
+
+    Serial.println("Initialize sensor");
 
     bme.setSPIPins(BME_SDA_PIN, BME_SCL_PIN);
 
@@ -94,6 +71,12 @@ void setup()
     bme.setPressureOversampling(BME680_OS_4X);
     bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
     bme.setGasHeater(320, 150); // 320*C for 150 ms
+
+    delay(50);
+    getBME680Readings();    // Test get sensor data
+
+    Serial.println("Successfully initialized sensor");
+
 
     Serial.println("----- init ok -----");
 }
