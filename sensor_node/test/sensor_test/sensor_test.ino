@@ -37,6 +37,18 @@ void getBME680Readings()
     sensorData.gasResistance = bme.gas_resistance / 1000.0;
 }
 
+
+/**
+ * 將 float 轉換為 16 進位
+ */
+void floatToHex(float value, uint8_t* buffer) {
+    int intValue = *(int*)&value;   // 將 float 轉換為 int 表示
+    buffer[0] = (intValue >> 24) & 0xFF;
+    buffer[1] = (intValue >> 16) & 0xFF;
+    buffer[2] = (intValue >> 8) & 0xFF;
+    buffer[3] = intValue & 0xFF;
+}
+
 void errLeds(void)
 {
     while (1)
@@ -94,10 +106,59 @@ void loop()
         }
 
         getBME680Readings();
-        Serial.printf("Temperature = %.2f ºC \n", sensorData.temperature);
-        Serial.printf("Humidity = %.2f % \n", sensorData.humidity);
-        Serial.printf("Pressure = %.2f hPa \n", sensorData.pressure);
-        Serial.printf("Gas Resistance = %.2f KOhm \n", sensorData.gasResistance);
+
+        /*
+        sensorData.temperature = (float)((int)(sensorData.temperature * 100)) / 100;
+        sensorData.humidity = (float)((int)(sensorData.humidity * 100)) / 100;
+        sensorData.pressure = (float)((int)(sensorData.pressure * 100)) / 100;
+        sensorData.gasResistance = (float)((int)(sensorData.gasResistance * 100)) / 100;
+        */
+        
+        Serial.printf("Temperature = %f ºC \n", sensorData.temperature);
+        Serial.printf("Humidity = %f % \n", sensorData.humidity);
+        Serial.printf("Pressure = %f hPa \n", sensorData.pressure);
+        Serial.printf("Gas Resistance = %f KOhm \n", sensorData.gasResistance);
+
+
+        uint8_t payload[16];
+        floatToHex(sensorData.temperature, payload);  // 轉換溫度
+        floatToHex(sensorData.humidity, payload + 4);  // 轉換濕度
+        floatToHex(sensorData.pressure, payload + 8);  // 轉換氣壓
+        floatToHex(sensorData.gasResistance, payload + 12);  // 轉換氣體阻抗
+
+
+
+        Serial.print("Temperature (hex): ");
+        for (int i = 0; i < 4; ++i) {
+            Serial.print(payload[i], HEX);
+            //Serial.print(" ");
+        }
+        Serial.println();
+
+        Serial.print("Humidity (hex): ");
+        for (int i = 4; i < 8; ++i) {
+            Serial.print(payload[i], HEX);
+            //Serial.print(" ");
+        }
+        Serial.println();
+
+        Serial.print("Pressure (hex): ");
+        for (int i = 8; i < 12; ++i) {
+            Serial.print(payload[i], HEX);
+            //Serial.print(" ");
+        }
+        Serial.println();
+
+        Serial.print("Gas Resistance (hex): ");
+        for (int i = 12; i < 16; ++i) {
+            Serial.print(payload[i], HEX);
+            //Serial.print(" ");
+        }
+        Serial.println();
+
+
+
+
         Serial.println("--------------");
 
         for (int n = 100; n >= 0; n--)
@@ -107,70 +168,3 @@ void loop()
         }
     }
 }
-
-
-/*
-int val = 0;
-void loop()
-{
-    heltec_loop();
-
-    if (button.isSingleClick())
-    {
-        val = 1;
-    }
-    if (button.isDoubleClick())
-    {
-        val = 3;
-    }
-
-    switch (val)
-    {
-
-    case 1: // scan data
-    {
-        for (int n = 0; n <= 100; n++)
-        {
-            heltec_led(n);
-            delay(5);
-        }
-
-        getBME680Readings();
-
-        for (int n = 100; n >= 0; n--)
-        {
-            heltec_led(n);
-            delay(5);
-        }
-
-        val = 2;
-        Serial.println("getBME680Readings OK");
-        delay(2000);
-        break;
-    }
-    
-    case 2: // print data
-    {
-        Serial.printf("Temperature = %.2f ºC \n", sensorData.temperature);
-        Serial.printf("Humidity = %.2f % \n", sensorData.humidity);
-        Serial.printf("Pressure = %.2f hPa \n", sensorData.pressure);
-        Serial.printf("Gas Resistance = %.2f KOhm \n", sensorData.gasResistance);
-        delay(5000);
-        val = 0;
-        break;
-    }
-
-    case 3: // deep sleep
-    {
-        Serial.printf("deep sleep");
-        heltec_deep_sleep(5);
-        break;
-    }
-
-    default:
-        break;
-    }
-
-    Serial.println("--- loop ---");
-}
-*/
